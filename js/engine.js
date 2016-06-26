@@ -25,8 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = 1110;
+    canvas.height = 808;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -95,6 +95,9 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        allBracelets.forEach(function(bracelet) {
+            bracelet.update(dt);
+        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -109,14 +112,16 @@ var Engine = (function(global) {
          */
         var rowImages = [
                 'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
+                'images/stone-block.png',   // Row 1 of 5 of stone
+                'images/stone-block.png',   // Row 2 of 5 of stone
+                'images/stone-block.png',   // Row 3 of 5 of stone
+                'images/stone-block.png',   // Row 4 of 5 of stone
+                'images/stone-block.png',   // Row 5 of 5 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
-            numRows = 6,
-            numCols = 5,
+            numRows = 8,
+            numCols = 11,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above
@@ -140,13 +145,15 @@ var Engine = (function(global) {
         ctx.textAlign = "left";
         ctx.fillText('Lives: ' + lives, 10, 80);
         ctx.textAlign = "right";
-        ctx.fillText('Score: ' + score, canvas_width - 10, 80);
+        ctx.fillText('Bracelets Won: ' + bracelets_won, canvas_width - 10, 80);
+        ctx.textAlign = "center";
+        ctx.fillText('Bankroll: $' + bankroll, canvas_width / 2, 80);
         ctx.font = "20px Impact";
         ctx.strokeStyle = "black";
         ctx.lineWidth = 0.5;
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.strokeText('Get Harley to the water 5 times before he runs out of lives', canvas_width / 2, 30);
+        ctx.strokeText('Win 3 bracelets before Vanessa gets you 5 times', canvas_width / 2, 30);
         renderEntities();
     }
 
@@ -163,6 +170,9 @@ var Engine = (function(global) {
         });
 
         player.render();
+        allBracelets.forEach(function(bracelet) {
+            bracelet.render();
+        });
     }
 
     /* This function does nothing but it could have been a good place to
@@ -183,7 +193,10 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/harley.png'
+        'images/harley.png',
+        'images/vanessa.png',
+        'images/jason.png',
+        'images/bracelet.png'
     ]);
     Resources.onReady(init);
 
