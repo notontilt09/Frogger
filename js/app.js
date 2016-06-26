@@ -1,12 +1,14 @@
+'use strict';
+
 // initialize variables to be used
-var canvas_width = 1110;
-var canvas_height = 808;
-var block_width = 101;
-var block_height = 83;
-var player_height = 101;
-var player_width = 101;
-var enemy_width = 101;
-var enemy_height = 75;
+var CANVAS_WIDTH = 1110;
+var CANVAS_HEIGHT = 808;
+var BLOCK_WIDTH = 101;
+var BLOCK_HEIGHT = 83;
+var PLAYER_HEIGHT = 101;
+var PLAYER_WIDTH = 101;
+var ENEMY_WIDTH = 101;
+var ENEMY_HEIGHT = 75;
 var max_enemies = 15;
 var lives = 5;
 var num_bracelets = 3;
@@ -20,8 +22,8 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/vanessa.png';
-    this.x = -enemy_width;;  // sets bugs initial x-position off screen left
-    this.y = block_height + (block_height * Math.floor(Math.random() * 3) + 52);  // sets bugs initial y position in center of one of the three rows at random
+    this.x = -ENEMY_WIDTH;;  // sets bugs initial x-position off screen left
+    this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 3) + 52);  // sets bugs initial y position in center of one of the three rows at random
     this.speed = Math.floor(Math.random() * 500);  // sets random speed of bug
 };
 
@@ -34,9 +36,9 @@ Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
 
     // reset bug position once it has crossed the screen
-    if (this.x > canvas_width) {
-        this.x = -enemy_width;
-        this.y = block_height + (block_height * Math.floor(Math.random() * 5) + 52);
+    if (this.x > CANVAS_WIDTH) {
+        this.x = -ENEMY_WIDTH;
+        this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 5) + 52);
         this.speed = Math.floor(Math.random() * 500);
     }
 
@@ -58,8 +60,8 @@ Enemy.prototype.render = function() {
 
 var Player = function() {
     this.sprite = 'images/jason.png';
-    this.x = canvas_width / 2 - block_width / 2 + 10;  // initial x position of player
-    this.y = canvas_height - 135 - block_height / 2;  // initial y position of player
+    this.x = CANVAS_WIDTH / 2 - BLOCK_WIDTH / 2 + 10;  // initial x position of player
+    this.y = CANVAS_HEIGHT - 135 - BLOCK_HEIGHT / 2;  // initial y position of player
 };
 
 // draw player on screen
@@ -69,16 +71,16 @@ Player.prototype.render = function() {
 
 Player.prototype.update = function(dt) {
     // increase score and return player to starting position if player makes it to the water
-    if (this.y < block_height) {
-        player.reset();
+    if (this.y < BLOCK_HEIGHT) {
+        this.reset();
     }
 
     // detect collisions between player and all enemy objects
-    for (var i = 0; i < allEnemies.length; i++) {
-        if (allEnemies[i].x < this.x + player_width - 30 &&
-            allEnemies[i].x + enemy_width - 5 > this.x &&
-            allEnemies[i].y < this.y + player_height - 80 &&
-            allEnemies[i].y + enemy_height - 5 > this.y) {
+    for (var i = 0, l = allEnemies.length; i < l; i++) {
+        if (allEnemies[i].x < this.x + PLAYER_WIDTH - 30 &&
+            allEnemies[i].x + ENEMY_WIDTH - 5 > this.x &&
+            allEnemies[i].y < this.y + PLAYER_HEIGHT - 80 &&
+            allEnemies[i].y + ENEMY_HEIGHT - 5 > this.y) {
             player.reset();
             lives--;
             if (lives == 0) {
@@ -94,30 +96,30 @@ Player.prototype.update = function(dt) {
 }
 // return player to initial starting position whenever player.reset is called
 Player.prototype.reset = function() {
-    this.x = canvas_width / 2 - block_width / 2 + 10;
-    this.y = canvas_height - 135 - block_height / 2;
+    this.x = CANVAS_WIDTH / 2 - BLOCK_WIDTH / 2 + 10;
+    this.y = CANVAS_HEIGHT - 135 - BLOCK_HEIGHT / 2;
 }
 // switch statement to handle key inputs from user.  Used to move player around the screen
 Player.prototype.handleInput = function(key) {
     switch (key) {
         case 'left':
-            if (this.x > block_width / 2) {
-            this.x -= block_width;
+            if (this.x > BLOCK_WIDTH / 2) {
+            this.x -= BLOCK_WIDTH
         }
             break;
         case 'up':
-            if (this.y > block_height / 2) {
-            this.y -= block_height;
+            if (this.y > BLOCK_HEIGHT / 2) {
+            this.y -= BLOCK_HEIGHT;
         }
             break;
         case 'right':
-            if (this.x < block_width * 10) {
-            this.x += block_width;
+            if (this.x < BLOCK_WIDTH * 10) {
+            this.x += BLOCK_WIDTH
         }
             break;
         case 'down':
-            if (this.y < block_height * 7) {
-            this.y += block_height;
+            if (this.y < BLOCK_HEIGHT * 7) {
+            this.y += BLOCK_HEIGHT;
         }
             break;
     }
@@ -126,8 +128,8 @@ Player.prototype.handleInput = function(key) {
 // bracelet object to collect
 var Bracelet = function() {
     this.sprite = 'images/bracelet.png';
-    this.x = 10 + (block_width * (Math.floor(Math.random() * 10)));
-    this.y =  (1.5 * block_height + 10) + (block_height * Math.floor(Math.random() * 5));
+    this.x = 10 + (BLOCK_WIDTH * (Math.floor(Math.random() * 10)));
+    this.y =  (1.5 * BLOCK_HEIGHT + 10) + (BLOCK_HEIGHT * Math.floor(Math.random() * 5));
 };
 
 // draw bracelets on canvas
@@ -138,10 +140,10 @@ Bracelet.prototype.render = function() {
 Bracelet.prototype.update = function(dt) {
  // Remove bracelets from canvas if player collides with them
    for (var i = 0; i < allBracelets.length; i++) {
-        if (allBracelets[i].x < player.x + player_width - 30 &&
-            allBracelets[i].x + enemy_width - 5 > player.x &&
-            allBracelets[i].y < player.y + player_height - 80 &&
-            allBracelets[i].y + enemy_height - 5 > player.y) {
+        if (allBracelets[i].x < player.x + PLAYER_WIDTH - 30 &&
+            allBracelets[i].x + ENEMY_WIDTH - 5 > player.x &&
+            allBracelets[i].y < player.y + PLAYER_HEIGHT - 80 &&
+            allBracelets[i].y + ENEMY_HEIGHT - 5 > player.y) {
                 allBracelets[i].x = 2000;  // move bracelet off-canvas once hit
                 allBracelets[i].y = 2000;
                 bracelets_won++;  // increment bracelets won variable once hit

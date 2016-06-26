@@ -145,15 +145,15 @@ var Engine = (function(global) {
         ctx.textAlign = "left";
         ctx.fillText('Lives: ' + lives, 10, 80);
         ctx.textAlign = "right";
-        ctx.fillText('Bracelets Won: ' + bracelets_won, canvas_width - 10, 80);
+        ctx.fillText('Bracelets Won: ' + bracelets_won, CANVAS_WIDTH - 10, 80);
         ctx.textAlign = "center";
-        ctx.fillText('Bankroll: $' + bankroll, canvas_width / 2, 80);
+        ctx.fillText('Bankroll: $' + bankroll, CANVAS_WIDTH / 2, 80);
         ctx.font = "20px Impact";
         ctx.strokeStyle = "black";
         ctx.lineWidth = 0.5;
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.strokeText('Win 3 bracelets before Vanessa gets you 5 times', canvas_width / 2, 30);
+        ctx.strokeText('Win 3 bracelets before Vanessa gets you 5 times', CANVAS_WIDTH / 2, 30);
         renderEntities();
     }
 
