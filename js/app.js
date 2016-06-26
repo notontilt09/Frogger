@@ -7,11 +7,11 @@ var player_height = 101;
 var player_width = 101;
 var enemy_width = 101;
 var enemy_height = 75;
-var max_enemies = 10;
+var max_enemies = 15;
 var lives = 5;
 var num_bracelets = 3;
 var bracelets_won = 0;
-var bankroll = -10000;
+var bankroll = 0;
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -79,15 +79,19 @@ Player.prototype.update = function(dt) {
             allEnemies[i].x + enemy_width - 5 > this.x &&
             allEnemies[i].y < this.y + player_height - 80 &&
             allEnemies[i].y + enemy_height - 5 > this.y) {
+            player.reset();
             lives--;
             if (lives == 0) {
-                lives = 67;
-                alert('YOU LOSE'); // create losing dialog box if run out of lives
-            }
-            player.reset();
+                bankroll = -10000;
+                lives = 5;
+                max_enemies = 200;
+                for (var i = 0; i < max_enemies; i++) {
+                    allEnemies.push(new Enemy());
+                }
         }
     }
 };
+}
 // return player to initial starting position whenever player.reset is called
 Player.prototype.reset = function() {
     this.x = canvas_width / 2 - block_width / 2 + 10;

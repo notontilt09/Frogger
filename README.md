@@ -2,10 +2,9 @@ frontend-nanodegree-arcade-game
 ===============================
 
 # Basic Gameplay
-Move the player around the board using the arrow keys.  Try to reach the water without hitting any of the enemies
+Move the player around the board using the arrow keys.  Try to collect all 3 bracelets without Vanessa catching you
 
 ## Scoring
-Reach the water and 1 point will be added to the total score.  Accumulate 5 points to win the game
+Collect all 3 bracelets and win $1,800,000.  Die 3 times and lose $10,000
 
-## Lives
-You start with 5 lives total.  Every time an enemy is hit, a life will be lost.  Lose all 5 lives to lose the game.
+
