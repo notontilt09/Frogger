@@ -93,6 +93,21 @@ Player.prototype.update = function(dt) {
         }
     }
 };
+    // detect collisions between player and bracelet objects
+    for (var i = 0, l = allBracelets.length; i < l; i++) {
+        if (allBracelets[i].x < this.x + PLAYER_WIDTH - 30 &&
+            allBracelets[i].x + ENEMY_WIDTH - 5 > player.x &&
+            allBracelets[i].y < this.y + PLAYER_HEIGHT - 80 &&
+            allBracelets[i].y + ENEMY_HEIGHT - 5 > this.y) {
+                allBracelets[i].x = 2000;  // move bracelet off-canvas once hit
+                allBracelets[i].y = 2000;
+                this.reset();
+                bracelets_won++;  // increment bracelets won variable once hit
+                if (bracelets_won == 3) {
+                    bankroll = 1800000;
+                };
+        };
+    };
 }
 // return player to initial starting position whenever player.reset is called
 Player.prototype.reset = function() {
@@ -137,24 +152,6 @@ Bracelet.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-Bracelet.prototype.update = function(dt) {
- // Remove bracelets from canvas if player collides with them
-   for (var i = 0; i < allBracelets.length; i++) {
-        if (allBracelets[i].x < player.x + PLAYER_WIDTH - 30 &&
-            allBracelets[i].x + ENEMY_WIDTH - 5 > player.x &&
-            allBracelets[i].y < player.y + PLAYER_HEIGHT - 80 &&
-            allBracelets[i].y + ENEMY_HEIGHT - 5 > player.y) {
-                allBracelets[i].x = 2000;  // move bracelet off-canvas once hit
-                allBracelets[i].y = 2000;
-                bracelets_won++;  // increment bracelets won variable once hit
-                if (bracelets_won == 3) {
-                    bankroll = 1800000;
-                }
-        }
-}
-}
-
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -169,13 +166,6 @@ var allBracelets = [];
     for (var i = 0; i < num_bracelets; i++) {
         allBracelets.push(new Bracelet());
     };
-
-
-
-
-
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
