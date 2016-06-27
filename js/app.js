@@ -67,7 +67,7 @@ var Player = function() {
 // draw player on screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Player.prototype.update = function(dt) {
     // increase score and return player to starting position if player makes it to the water
@@ -81,12 +81,12 @@ Player.prototype.update = function(dt) {
             allEnemies[i].x + ENEMY_WIDTH - 5 > this.x &&
             allEnemies[i].y < this.y + PLAYER_HEIGHT - 80 &&
             allEnemies[i].y + ENEMY_HEIGHT - 5 > this.y) {
-            player.reset();
+            this.reset();
             lives--;
             if (lives == 0) {
                 bankroll = -10000;
                 lives = 5;
-                max_enemies = 200;
+                max_enemies = 180;
                 for (var i = 0; i < max_enemies; i++) {
                     allEnemies.push(new Enemy());
                 }
