@@ -115,9 +115,9 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 4 of 5 of stone
                 'images/stone-block.png',   // Row 5 of 5 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                // 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
-            numRows = 8,
+            numRows = 7,
             numCols = 11,
             row, col;
 
@@ -138,19 +138,22 @@ var Engine = (function(global) {
             }
         }
         ctx.font = 'bold 20px Roboto';
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = 'black';
         ctx.textAlign = "left";
         ctx.fillText('Lives: ' + lives, 10, 80);
         ctx.textAlign = "right";
         ctx.fillText('Bracelets Won: ' + bracelets_won, CANVAS_WIDTH - 10, 80);
         ctx.textAlign = "center";
-        ctx.fillText('Bankroll: $' + bankroll, CANVAS_WIDTH / 2, 80);
+        ctx.fillText('Vanessa\'s Bankroll: $' + v_bankroll, CANVAS_WIDTH / 3, 80);
+        ctx.textAlign = "center";
+        ctx.fillText('Jason\'s Bankroll: $' + bankroll, CANVAS_WIDTH * 2 / 3, 80);
         ctx.font = "20px Impact";
         ctx.strokeStyle = "black";
-        ctx.lineWidth = 0.5;
+        ctx.lineWidth = 1;
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.strokeText('Win 3 bracelets before Vanessa gets you 5 times', CANVAS_WIDTH / 2, 30);
+        ctx.fillText('Win 3 bracelets before Vanessa gets you 3 times', CANVAS_WIDTH / 2, 30);
+        ctx.strokeText('Win 3 bracelets before Vanessa gets you 3 times', CANVAS_WIDTH / 2, 30);
         renderEntities();
     }
 
@@ -193,7 +196,8 @@ var Engine = (function(global) {
         'images/harley.png',
         'images/vanessa.png',
         'images/jason.png',
-        'images/bracelet.png'
+        'images/bracelet.png',
+        'images/jasonwins.png'
     ]);
     Resources.onReady(init);
 
