@@ -15,8 +15,8 @@ var num_bracelets = 3;
 var bracelets_won = 0;
 var bankroll = 0;
 var v_bankroll = 0;
-var audio = new Audio('images/thrones.mp3');
-audio.play();
+var background_music = new Audio('images/thrones.mp3');
+background_music.play();
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -48,9 +48,13 @@ Enemy.prototype.update = function(dt) {
     if (bankroll === 1800000) {
         allEnemies = [];
         player.sprite = 'images/jasonwins.png';
-        audio.pause();
+        background_music.pause();
+        var wingame = new Audio('images/wingame.wav');
+        wingame.play();
+        wingame.volume = 0.2;
         player.x = 200;
         player.y = 200;
+        lives = 0;
         v_bankroll = -1800000;
         document.getElementById('button').style.display = 'inline';
         // document.getElementById('button').removeAttribute('disabled');
@@ -92,9 +96,26 @@ Player.prototype.update = function(dt) {
             allEnemies[i].y < this.y + PLAYER_HEIGHT - 80 &&
             allEnemies[i].y + ENEMY_HEIGHT - 5 > this.y) {
             this.reset();
+            var death = new Audio('images/loselife.wav');
+            if (lives > 1) {
+            death.play();
+        }
+
+            // code to delay sound, use for endgame later
+
+            // var timeoutID;
+            // function delayedSound() {
+            //     timeoutID = window.setTimeout(deathplay, 1000);
+            // }
+            // function deathplay() {
+            //     death.play();
+            // }
+            // delayedSound();  //
             lives--;
             if (lives == 0) {
-                audio.pause();
+                background_music.pause();
+                var gameover = new Audio('images/gameover.wav');
+                gameover.play();
                 bankroll = -10000;
                 v_bankroll = 10000;
                 max_enemies = 180;
@@ -113,6 +134,8 @@ Player.prototype.update = function(dt) {
             allBracelets[i].y + ENEMY_HEIGHT - 5 > this.y) {
                 allBracelets[i].x = 2000;  // move bracelet off-canvas once hit
                 allBracelets[i].y = 2000;
+                var coin = new Audio('images/coin.wav');
+                coin.play();
                 this.reset();
                 bracelets_won++;  // increment bracelets won variable once hit
                 if (bracelets_won == 3) {
@@ -128,6 +151,7 @@ Player.prototype.reset = function() {
 }
 // switch statement to handle key inputs from user.  Used to move player around the screen
 Player.prototype.handleInput = function(key) {
+    if (lives > 0) {
     switch (key) {
         case 'left':
             if (this.x > BLOCK_WIDTH / 2) {
@@ -150,6 +174,7 @@ Player.prototype.handleInput = function(key) {
         }
             break;
     }
+}
 };
 
 // bracelet object to collect
@@ -196,8 +221,8 @@ function newGame() {
     document.getElementById('button').style.display = 'none';
     player.sprite = 'images/jason.png';
     player.reset();
-    audio.currentTime = 0;
-    audio.play();
+    background_music.currentTime = 0;
+    background_music.play();
     allEnemies = [];
     allBracelets = [];
     lives = 3;

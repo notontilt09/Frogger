@@ -147,7 +147,7 @@ var Engine = (function(global) {
         ctx.fillText('Vanessa\'s Bankroll: $' + v_bankroll, CANVAS_WIDTH / 3, 80);
         ctx.textAlign = "center";
         ctx.fillText('Jason\'s Bankroll: $' + bankroll, CANVAS_WIDTH * 2 / 3, 80);
-        ctx.font = "20px Impact";
+        ctx.font = "32px Impact";
         ctx.strokeStyle = "black";
         ctx.lineWidth = 1;
         ctx.fillStyle = "white";
