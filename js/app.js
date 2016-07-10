@@ -17,6 +17,7 @@ var bankroll = 0;
 var v_bankroll = 0;
 var background_music = new Audio('images/thrones.mp3');
 background_music.play();
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -25,9 +26,9 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/vanessa.png';
-    this.x = -ENEMY_WIDTH;  // sets bugs initial x-position off screen left
-    this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 3) + 52);  // sets bugs initial y position in center of one of the three rows at random
-    this.speed = Math.floor(Math.random() * 500);  // sets random speed of bug
+    this.x = -ENEMY_WIDTH;  // sets enemy initial x-position off screen left
+    this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 3) + 52);  // sets enemy initial y position in center of one of the three rows at random
+    this.speed = Math.floor(Math.random() * 500);  // sets random speed of enemy
 };
 
 // Update the enemy's position, required method for game
@@ -43,21 +44,6 @@ Enemy.prototype.update = function(dt) {
         this.x = -ENEMY_WIDTH;
         this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 5) + 52);
         this.speed = Math.floor(Math.random() * 500);
-    }
-
-    if (bankroll === 1800000) {
-        allEnemies = [];
-        player.sprite = 'images/jasonwins.png';
-        background_music.pause();
-        var wingame = new Audio('images/wingame.wav');
-        wingame.play();
-        wingame.volume = 0.2;
-        player.x = 200;
-        player.y = 200;
-        lives = 0;
-        v_bankroll = -1800000;
-        document.getElementById('button').style.display = 'inline';
-        // document.getElementById('button').removeAttribute('disabled');
     }
 };
 
@@ -129,20 +115,49 @@ Player.prototype.update = function(dt) {
     // detect collisions between player and bracelet objects
     for (var i = 0, l = allBracelets.length; i < l; i++) {
         if (allBracelets[i].x < this.x + PLAYER_WIDTH - 30 &&
-            allBracelets[i].x + ENEMY_WIDTH - 5 > player.x &&
+            allBracelets[i].x + ENEMY_WIDTH - 5 > this.x &&
             allBracelets[i].y < this.y + PLAYER_HEIGHT - 80 &&
             allBracelets[i].y + ENEMY_HEIGHT - 5 > this.y) {
                 allBracelets[i].x = 2000;  // move bracelet off-canvas once hit
                 allBracelets[i].y = 2000;
                 var coin = new Audio('images/coin.wav');
                 coin.play();
-                this.reset();
                 bracelets_won++;  // increment bracelets won variable once hit
                 if (bracelets_won == 3) {
                     bankroll = 1800000;
+                      var wingame = new Audio('images/wingame.wav');
+                        wingame.play();
+                        wingame.volume = 0.8;
                 }
         }
     }
+
+        if (marshy.x < this.x + PLAYER_WIDTH - 30 &&
+            marshy.x + ENEMY_WIDTH - 5 > this.x &&
+            marshy.y < this.y + PLAYER_HEIGHT - 80 &&
+            marshy.y + ENEMY_HEIGHT - 5 > this.y) {
+                var oneup = new Audio('images/1up.wav');
+                oneup.play();
+                allEnemies.pop();
+                marshy.x = -ENEMY_WIDTH;
+                marshy.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 5) + 52);
+            }
+
+    if (bankroll === 1800000) {
+        allEnemies = [];
+        marshy.x = 2000;
+        marshy.y = 2000;
+        marshy.speed = 0;
+        player.sprite = 'images/jasonwins.png';
+        background_music.pause();
+        player.x = 200;
+        player.y = 200;
+        lives = 0;
+        v_bankroll = -1800000;
+        document.getElementById('button').style.display = 'inline';
+        // document.getElementById('button').removeAttribute('disabled');
+    }
+
 }
 // return player to initial starting position whenever player.reset is called
 Player.prototype.reset = function() {
@@ -189,6 +204,32 @@ Bracelet.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+var Marshy = function() {
+    this.sprite = 'images/marshy.png';
+    this.x = -ENEMY_WIDTH;  // sets marshy initial x-position off screen right
+    this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 5) + 52);  // sets marshy initial y position in center of one of the 5 rows at random
+    this.speed = Math.floor(Math.random() * 800);  // sets random speed of marshy
+};
+
+Marshy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Marshy.prototype.update = function(dt) {
+   if (lives > 0 && bankroll != 1800000 && allEnemies.length > 0) {
+    this.x += this.speed * dt;
+    if (this.x > CANVAS_WIDTH) {
+        this.x = -ENEMY_WIDTH;
+        this.y = BLOCK_HEIGHT + (BLOCK_HEIGHT * Math.floor(Math.random() * 5) + 52);
+        this.speed = Math.floor(Math.random() * 800);
+    }
+} else {
+    this.x = 2000;
+    this.y = 2000;
+    this.speed = 0;
+}
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -198,11 +239,16 @@ for (var i = 0; i < max_enemies; i++) {
 }
 
 var player = new Player();
+
 var bracelet = new Bracelet();
 var allBracelets = [];
     for (var i = 0; i < num_bracelets; i++) {
         allBracelets.push(new Bracelet());
     }
+
+var marshy = new Marshy();
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

@@ -95,6 +95,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        marshy.update(dt);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -173,6 +174,7 @@ var Engine = (function(global) {
         allBracelets.forEach(function(bracelet) {
             bracelet.render();
         });
+        marshy.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -197,7 +199,8 @@ var Engine = (function(global) {
         'images/vanessa.png',
         'images/jason.png',
         'images/bracelet.png',
-        'images/jasonwins.png'
+        'images/jasonwins.png',
+        'images/marshy.png'
     ]);
     Resources.onReady(init);
 
